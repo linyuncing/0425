@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>左右搖擺動畫</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* 垂直排列內容 */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0; /* 可選的背景色 */
+        }
+        img {
+            max-width: 500px; /* 限制圖片大小 */
+            animation: swing 2s infinite ease-in-out; /* 左右搖擺動畫 */
+            cursor: pointer; /* 滑鼠移到圖片上時顯示手型 */
+        }
+        @keyframes swing {
+            0%, 100% {
+                transform: translateX(-20px); /* 向左移動 */
+            }
+            50% {
+                transform: translateX(20px); /* 向右移動 */
+            }
+        }
+        @keyframes jump {
+            0%, 100% {
+                transform: translateY(0); /* 初始位置 */
+            }
+            50% {
+                transform: translateY(-20px); /* 向上跳動 */
+            }
+        }
+        .jump {
+            animation: jump 0.5s ease-in-out 2; /* 上下跳動兩次 */
+        }
+        p {
+            margin-top: 10px; /* 與圖片保持距離 */
+            font-size: 50px; /* 調整字體大小 */
+            color: #333; /* 文字顏色 */
+        }
+    </style>
+</head>
+<body>
+    <img id="toggleImage" src="images/close.png" alt="Close Icon">
+    <p>open</p>
+    <!-- 音樂檔案 -->
+    <audio id="clickSound" src="audio/myedit_ai_sfx_0425014338.mp3"></audio>
+    <script>
+        const image = document.getElementById('toggleImage');
+        const audio = document.getElementById('clickSound');
+
+        // 設定音樂播放速度為 4.5 倍
+        audio.playbackRate = 4.5;
+
+        image.addEventListener('click', () => {
+            // 播放音樂
+            audio.currentTime = 0; // 確保每次點擊從頭播放
+            audio.play();
+
+            // 添加跳動動畫
+            image.classList.add('jump');
+            // 移除跳動動畫，確保可以重複觸發
+            image.addEventListener('animationend', () => {
+                image.classList.remove('jump');
+            }, { once: true });
+
+            // 切換圖片邏輯
+            if (image.src.includes('close.png')) {
+                image.src = 'images/open.png'; // 切換成 open.png
+            } else {
+                window.location.href = 'https://linyuncing.github.io/20250411/'; // 跳轉到指定連結
+            }
+        });
+    </script>
+</body>
+</html>
